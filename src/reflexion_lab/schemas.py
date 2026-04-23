@@ -14,12 +14,18 @@ class QAExample(BaseModel):
     context: list[ContextChunk]
 
 class JudgeResult(BaseModel):
-    # TODO: Học viên định nghĩa các trường cần thiết cho kết quả đánh giá (score, reason, ...)
-    pass
+    # All fields required (no defaults) so OpenAI Structured Outputs can validate
+    # against the JSON schema in strict mode. Callers must pass empty lists [] explicitly.
+    score: Literal[0, 1]
+    reason: str
+    missing_evidence: list[str]
+    spurious_claims: list[str]
 
 class ReflectionEntry(BaseModel):
-    # TODO: Học viên định nghĩa các trường cần thiết cho một mục reflection (attempt_id, lesson, strategy, ...)
-    pass
+    attempt_id: int
+    failure_reason: str
+    lesson: str
+    next_strategy: str
 
 class AttemptTrace(BaseModel):
     attempt_id: int
